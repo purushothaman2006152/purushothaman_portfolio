@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Purushothaman.E Portfolio</title>
+  <link rel="icon" type="image/jpg" href="p.jpg">
+  <style>
+    /* General Body */
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: "Poppins", sans-serif;
+      background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+      color: #f0f0f0;
+    }
+
+    /* Header Section */
+    header {
+      text-align: center;
+      padding: 4rem 1rem 3rem;
+      position: relative;
+      background: linear-gradient(135deg, #2310cf, #56ab2f);
+      overflow: hidden;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.4);
+    }
+
+    .profile-picture {
+      width: 130px;
+      height: 130px;
+      border-radius: 50%;
+      border: 5px solid #fff;
+      object-fit: cover;
+      animation: bounce 3s infinite ease-in-out;
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-12px); }
+    }
+
+    .header-content h1 {
+      margin: 15px 0 5px;
+      font-size: 2.8rem;
+      letter-spacing: 2px;
+    }
+
+    .header-content p {
+      margin: 5px 0;
+      font-size: 1.2rem;
+    }
+
+    /* Navigation Bar */
+    nav {
+      position: sticky;
+      top: 0;
+      background: #111;
+      z-index: 1000;
+      padding: 0.8rem 0;
+      box-shadow: 0 3px 15px rgba(0,0,0,0.3);
+    }
+
+    nav ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      text-align: center;
+    }
+
+    nav ul li {
+      display: inline;
+      margin: 0 18px;
+    }
+
+    nav ul li a {
+      text-decoration: none;
+      color: #fff;
+      font-weight: 500;
+      transition: color 0.3s;
+    }
+
+    nav ul li a:hover {
+      color: #56ab2f;
+    }
+
+    /* Section Styles */
+    section {
+      padding: 3rem 1.5rem;
+    }
+
+    .section-content {
+      background: #fff;
+      color: #333;
+      padding: 2rem;
+      margin: auto;
+      max-width: 900px;
+      border-radius: 15px;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.25);
+      animation: fadeIn 1.2s ease;
+    }
+
+    .section-content h2 {
+      text-align: center;
+      color: #2310cf;
+      margin-bottom: 1rem;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(25px);}
+      to { opacity: 1; transform: translateY(0);}
+    }
+
+    /* Skills List */
+    ul {
+      padding-left: 20px;
+    }
+
+    ul li {
+      margin: 6px 0;
+    }
+
+    /* Projects Links */
+    .section-content a {
+      color: #2310cf;
+      text-decoration: none;
+      transition: 0.3s;
+    }
+
+    .section-content a:hover {
+      color: #56ab2f;
+    }
+
+    
+
+    .gallery img {
+      width: 100%;
+      border-radius: 12px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+      transition: transform 0.3s;
+    }
+
+    .gallery img:hover {
+      transform: scale(1.05);
+    }
+
+    /* Contact Form */
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    input, textarea {
+      padding: 12px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 1rem;
+    }
+
+    button {
+      padding: 12px;
+      border: none;
+      border-radius: 30px;
+      font-size: 1rem;
+      font-weight: bold;
+      background: linear-gradient(45deg, #2310cf, #56ab2f);
+      color: #fff;
+      cursor: pointer;
+      transition: transform 0.3s;
+    }
+
+    button:hover {
+      transform: scale(1.05);
+    }
+
+    /* Resume Button */
+    .download-button {
+      background: linear-gradient(45deg, #2310cf, #56ab2f);
+      color: #fff;
+      padding: 0.7rem 1.5rem;
+      text-decoration: none;
+      border-radius: 30px;
+      display: inline-block;
+      transition: transform 0.3s ease;
+    }
+
+    .download-button:hover {
+      transform: scale(1.05);
+    }
+
+    /* Footer */
+    footer {
+      background: #111;
+      text-align: center;
+      padding: 1rem;
+      color: #bbb;
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header>
+    <img src="p.jpg" alt="Profile Picture" class="profile-picture">
+    <div class="header-content">
+      <h1>PURUSHOTHAMAN.E</h1>
+      <p>SRM ARTS AND SCIENCE COLLEGE</p>
+      <p>Department of Computer Science</p>
+    </div>
+  </header>
+
+  <!-- Navbar -->
+  <nav>
+    <ul>
+      <li><a href="#about">About</a></li>
+      <li><a href="#education">Education</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#contact">Contact</a></li>
+      <li><a href="#resume">Resume</a></li>
+    </ul>
+  </nav>
+
+  <!-- About -->
+  <section id="about">
+    <div class="section-content">
+      <h2>About Me</h2>
+      <p>As I'm <b>Software Developer</b> motivational and responsible computer science student with a strong passion programming.Known for team work, leadership, commitment to learning through practical experience.</p>
+    </div>
+  </section>
+
+  <!-- Education -->
+  <section id="education">
+    <div class="section-content">
+      <h2>Education</h2>
+      <p><b>B.Sc. Computer Science</b></p>
+      <p>Madras University</p>
+    </div>
+  </section>
+
+  <!-- Skills -->
+  <section id="skills">
+    <div class="section-content">
+      <h2>Skills</h2>
+      <ul>
+        <li>HTML, CSS, JavaScript</li>
+        <li>Python, Java</li>
+        <li>Responsive Web Design</li>
+        <li>MySQL basics</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- Projects -->
+  <section id="projects">
+    <div class="section-content">
+      <h2>Projects</h2>
+      <ul>
+        <li><a href="https://purushoth2006-thehero.github.io/My_Website/">My Website</a></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- Contact -->
+  <section id="contact">
+    <div class="section-content">
+      <h2>Contact Me</h2>
+      <form>
+        <input type="text" placeholder="Your Name" required>
+        <input type="email" placeholder="Your Email" required>
+        <textarea rows="5" placeholder="Your Message"></textarea>
+        <button type="submit">Send Message</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- Resume -->
+  <section id="resume">
+    <div class="section-content" style="text-align:center;">
+      <h2>Resume</h2>
+      <a href="resume.pdf" target="_blank" class="download-button">Download CV</a>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <p>&copy; 2025 Purushothaman.E | All Rights Reserved</p>
+  </footer>
+  <script>
+        // Smooth scrolling to section when clicking on navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+
+                const targetId = this.getAttribute('href').substring(1);
+                const targetElement = document.getElementById(targetId);
+
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
