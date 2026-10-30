@@ -14,6 +14,7 @@
   --accent: #7bd88f;
   --warm: #e6b95a;
   --link: #9fe3b0;
+  --glow: rgba(123, 216, 143, 0.14);
   --mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
   color-scheme: dark;
 }
@@ -66,8 +67,8 @@ html[data-mode="off"] {
 
 html[data-text="amber"] { --fg: #f6e7c8; --muted: #b39a6c; --accent: #ffb454; --warm: #ffd37a; --link: #ffd08a; }
 html[data-text="ice"] { --fg: #e4f1ff; --muted: #7f9bbd; --accent: #7cc4ff; --warm: #b9a6ff; --link: #a9d8ff; }
-html[data-win="black"] { --panel: rgba(3, 3, 3, 0.95); --bar: #121212; --line: #1f3d29; --fg: #cfeedd; --muted: #6a9a7a; --accent: #4dff88; --warm: #ffd36b; --link: #8dffb0; }
-html[data-win="brown"] { --panel: rgba(28, 17, 8, 0.95); --bar: #2c1a0c; --line: #54391a; --fg: #f6e7c8; --muted: #b39a6c; --accent: #ffb454; --warm: #ffd37a; --link: #ffd08a; }
+html[data-win="black"] { --glow: rgba(77, 255, 136, 0.20); --panel: rgba(3, 3, 3, 0.95); --bar: #121212; --line: #1f3d29; --fg: #cfeedd; --muted: #6a9a7a; --accent: #4dff88; --warm: #ffd36b; --link: #8dffb0; }
+html[data-win="brown"] { --glow: rgba(255, 180, 84, 0.20); --panel: rgba(28, 17, 8, 0.95); --bar: #2c1a0c; --line: #54391a; --fg: #f6e7c8; --muted: #b39a6c; --accent: #ffb454; --warm: #ffd37a; --link: #ffd08a; }
 .grp { display: flex; align-items: center; gap: 6px; }
 .grp > span { color: var(--muted); font-size: 12px; }
 
@@ -93,7 +94,7 @@ body {
   background: var(--panel);
   backdrop-filter: blur(5px);
   -webkit-backdrop-filter: blur(5px);
-  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.45);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.45), 0 0 0 1px var(--glow), 0 0 70px var(--glow);
   overflow: hidden;
 }
 .bar {
@@ -104,7 +105,9 @@ body {
 }
 .dots { display: flex; gap: 7px; }
 .dots i { width: 11px; height: 11px; border-radius: 50%; background: var(--line); display: block; }
-.dots i:first-child { background: var(--accent); }
+.dots button { position: relative; width: 11px; height: 11px; padding: 0; border: 0; border-radius: 50%; background: var(--accent); cursor: pointer; display: block; }
+.dots button::before { content: ""; position: absolute; inset: -8px; }
+.dots button:hover { box-shadow: 0 0 10px var(--accent); }
 .title { color: var(--muted); font-size: 12.5px; flex: 1 1 200px; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .modes { display: flex; gap: 4px; flex-wrap: wrap; }
 .modes button {
@@ -135,7 +138,7 @@ body {
 .fetch { display: grid; grid-template-columns: 172px minmax(0, 1fr); gap: 24px; align-items: start; }
 .shot { margin: 0; border: 1px solid var(--accent); padding: 5px; background: rgba(0, 0, 0, 0.25); }
 .shot img { display: block; width: 100%; height: auto; aspect-ratio: 2 / 3; object-fit: cover; object-position: top; }
-.info h1 { margin: 0; font-size: 28px; line-height: 1.15; font-weight: 700; letter-spacing: -0.01em; }
+.info h1 { text-shadow: 0 0 22px var(--glow); margin: 0; font-size: 28px; line-height: 1.15; font-weight: 700; letter-spacing: -0.01em; }
 .role { margin: 4px 0 14px; color: var(--accent); font-size: 15px; }
 dl.kv { display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: 4px 18px; margin: 0; }
 dl.kv dt { color: var(--accent); }
@@ -198,29 +201,8 @@ form.prompt:focus-within { box-shadow: 0 1px 0 var(--accent); }
 
 <main class="win">
   <div class="bar">
-    <div class="dots" aria-hidden="true"><i></i><i></i><i></i></div>
+    <div class="dots"><button type="button" id="dotbtn" aria-label="Switch colour theme" title="Switch colour theme"></button><i aria-hidden="true"></i><i aria-hidden="true"></i></div>
     <div class="title">purushothaman@portfolio: ~</div>
-    <div class="grp"><span>background</span>
-    <div class="modes" role="group" aria-label="Background animation">
-      <button type="button" data-mode="forest" aria-pressed="true">forest</button>
-      <button type="button" data-mode="autumn" aria-pressed="false">autumn</button>
-      <button type="button" data-mode="moon" aria-pressed="false">moonlit</button>
-      <button type="button" data-mode="dusk" aria-pressed="false">dusk</button>
-      <button type="button" data-mode="teal" aria-pressed="false">teal</button>
-      <button type="button" data-mode="neural" aria-pressed="false">neural</button>
-      <button type="button" data-mode="off" aria-pressed="false">off</button>
-    </div></div>
-    <div class="grp"><span>combo</span>
-    <div class="modes" role="group" aria-label="Window and background colour combinations">
-      <button type="button" data-combo="1" aria-pressed="false">black + green on dusk</button>
-      <button type="button" data-combo="2" aria-pressed="false">brown + amber on teal</button>
-    </div></div>
-    <div class="grp"><span>text</span>
-    <div class="modes" role="group" aria-label="Text colour">
-      <button type="button" data-text="auto" aria-pressed="true">match</button>
-      <button type="button" data-text="amber" aria-pressed="false">amber</button>
-      <button type="button" data-text="ice" aria-pressed="false">ice</button>
-    </div></div>
   </div>
   <div class="screen">
     <div class="login" id="login"></div>
@@ -270,7 +252,7 @@ form.prompt:focus-within { box-shadow: 0 1px 0 var(--accent); }
       long: 'Operating system fundamentals in practice: a minimal 16-bit bootloader that grows into a two-stage command interpreter, written in NASM.' }
   ];
 
-  var COMMANDS = ['help', 'neofetch', 'skills', 'projects', 'experience', 'education', 'certs', 'resume', 'contact', 'mode', 'text', 'combo', 'clear'];
+  var COMMANDS = ['help', 'neofetch', 'skills', 'projects', 'experience', 'education', 'certs', 'resume', 'contact', 'theme', 'mode', 'clear'];
 
   function projRow(p, i) {
     return '<button type="button" class="proj" data-cmd="project ' + (i + 1) + '">' +
@@ -286,7 +268,7 @@ form.prompt:focus-within { box-shadow: 0 1px 0 var(--accent); }
         ['neofetch', 'who I am'], ['projects', 'things I have built'], ['project &lt;n&gt;', 'details for one project'],
         ['skills', 'languages and tools'], ['experience', 'internship'], ['education', 'degree'],
         ['certs', 'certifications'], ['resume', 'open my resume (PDF)'], ['contact', 'where to find me'],
-        ['mode &lt;forest|autumn|moon|dusk|teal|neural|off&gt;', 'change background and animation'], ['combo &lt;1|2&gt;', 'CMD window and background in different colours'], ['text &lt;match|amber|ice&gt;', 'change text colour'], ['clear', 'empty the screen']
+        ['theme &lt;1|2&gt;', 'switch colour theme'], ['mode &lt;neural|off&gt;', 'change the animation'], ['clear', 'empty the screen']
       ];
       return '<div class="rows">' + rows.map(function (r) { return '<span class="k">' + r[0] + '</span><span>' + r[1] + '</span>'; }).join('') +
         '</div><p class="dim">Tab completes a command. Arrow up repeats the last one.</p>';
@@ -343,14 +325,16 @@ form.prompt:focus-within { box-shadow: 0 1px 0 var(--accent); }
         '<span class="k">location</span><span>Tamil Nadu, India</span></div>';
     },
     mode: function (arg) {
+      if (arg === 'forest') return CMD.combo('1');
+      if (['neural', 'off'].indexOf(arg) === -1) return 'Usage: <span class="ok">mode neural</span> or <span class="ok">mode off</span>. For the forest, use <span class="ok">theme 1</span> or <span class="ok">theme 2</span>.';
       if (MODES.indexOf(arg) === -1) return 'Usage: <span class="ok">mode forest</span>, <span class="ok">autumn</span>, <span class="ok">moon</span>, <span class="ok">dusk</span>, <span class="ok">teal</span>, <span class="ok">neural</span> or <span class="ok">off</span>.';
       setMode(arg);
       return 'Background set to <span class="ok">' + arg + '</span>.';
     },
-    theme: function (a) { return CMD.mode(a); },
+    theme: function (a) { return CMD.combo(a || nextCombo()); },
     combo: function (arg) {
-      if (!setCombo(arg)) return 'Usage: <span class="ok">combo 1</span> (black window, green text, dusk background) or <span class="ok">combo 2</span> (brown window, amber text, teal background).';
-      return 'Combo <span class="ok">' + esc(arg) + '</span> applied.';
+      if (!setCombo(arg)) return 'Usage: <span class="ok">theme 1</span> (black window, green text, violet forest) or <span class="ok">theme 2</span> (brown window, amber text, teal forest).';
+      return 'Theme <span class="ok">' + esc(arg) + '</span> applied.';
     },
     text: function (arg) {
       var t = arg === 'match' ? 'auto' : arg;
@@ -400,7 +384,7 @@ form.prompt:focus-within { box-shadow: 0 1px 0 var(--accent); }
   ['help', 'neofetch', 'projects', 'skills', 'experience', 'education', 'certs', 'resume', 'contact'].forEach(function (c) {
     var b = document.createElement('button'); b.type = 'button'; b.className = 'chip'; b.setAttribute('data-cmd', c); b.textContent = c; chips.appendChild(b);
   });
-  $('#login').textContent = 'Last login: ' + new Date().toDateString() + ' on ttys001';
+  $('#login').textContent = 'Last login: ' + new Date().toDateString() + ' on ttys001. Click the green dot or type theme to switch colours.';
 
   /* ---------- animation ---------- */
   var canvas = $('#fx'), ctx = canvas.getContext('2d');
@@ -539,6 +523,9 @@ form.prompt:focus-within { box-shadow: 0 1px 0 var(--accent); }
     return true;
   }
   document.querySelectorAll('.modes button[data-combo]').forEach(function (b) { b.addEventListener('click', function () { setCombo(b.getAttribute('data-combo')); }); });
+  function nextCombo() { return document.documentElement.getAttribute('data-win') === 'black' ? '2' : '1'; }
+  var dotBtn = document.getElementById('dotbtn');
+  if (dotBtn) dotBtn.addEventListener('click', function () { setCombo(nextCombo()); });
   function setText(t, keep) {
     if (!keep) clearWin();
     if (t === 'auto') document.documentElement.removeAttribute('data-text'); else document.documentElement.setAttribute('data-text', t);
@@ -564,12 +551,13 @@ form.prompt:focus-within { box-shadow: 0 1px 0 var(--accent); }
   document.addEventListener('visibilitychange', function () { if (!document.hidden) start(); });
 
   var saved = null; try { saved = localStorage.getItem('portfolio-mode'); } catch (e) {}
-  if (MODES.indexOf(saved) !== -1) mode = saved;
+  if (saved === 'neural' || saved === 'off') mode = saved;
   document.documentElement.setAttribute('data-mode', mode);
   document.querySelectorAll('.modes button[data-mode]').forEach(function (b) { b.setAttribute('aria-pressed', String(b.getAttribute('data-mode') === mode)); });
   resize(); start();
   var savedWin = null; try { savedWin = localStorage.getItem('portfolio-win'); } catch (e) {}
   if (COMBOS[savedWin]) setCombo(savedWin);
+  else if (mode !== 'neural' && mode !== 'off') setCombo('1');
 
   /* ---------- boot ---------- */
   run('neofetch', true);
