@@ -62,6 +62,11 @@ html[data-mode="off"] {
   --link: #9ad9b6;
 }
 
+html[data-text="amber"] { --fg: #f6e7c8; --muted: #b39a6c; --accent: #ffb454; --warm: #ffd37a; --link: #ffd08a; }
+html[data-text="ice"] { --fg: #e4f1ff; --muted: #7f9bbd; --accent: #7cc4ff; --warm: #b9a6ff; --link: #a9d8ff; }
+.grp { display: flex; align-items: center; gap: 6px; }
+.grp > span { color: var(--muted); font-size: 12px; }
+
 * { box-sizing: border-box; }
 body {
   background: var(--bg);
@@ -191,13 +196,20 @@ form.prompt:focus-within { box-shadow: 0 1px 0 var(--accent); }
   <div class="bar">
     <div class="dots" aria-hidden="true"><i></i><i></i><i></i></div>
     <div class="title">purushothaman@portfolio: ~</div>
+    <div class="grp"><span>background</span>
     <div class="modes" role="group" aria-label="Background animation">
       <button type="button" data-mode="forest" aria-pressed="true">forest</button>
       <button type="button" data-mode="autumn" aria-pressed="false">autumn</button>
       <button type="button" data-mode="moon" aria-pressed="false">moonlit</button>
       <button type="button" data-mode="neural" aria-pressed="false">neural</button>
       <button type="button" data-mode="off" aria-pressed="false">off</button>
-    </div>
+    </div></div>
+    <div class="grp"><span>text</span>
+    <div class="modes" role="group" aria-label="Text colour">
+      <button type="button" data-text="auto" aria-pressed="true">match</button>
+      <button type="button" data-text="amber" aria-pressed="false">amber</button>
+      <button type="button" data-text="ice" aria-pressed="false">ice</button>
+    </div></div>
   </div>
   <div class="screen">
     <div class="login" id="login"></div>
@@ -247,7 +259,7 @@ form.prompt:focus-within { box-shadow: 0 1px 0 var(--accent); }
       long: 'Operating system fundamentals in practice: a minimal 16-bit bootloader that grows into a two-stage command interpreter, written in NASM.' }
   ];
 
-  var COMMANDS = ['help', 'neofetch', 'skills', 'projects', 'experience', 'education', 'certs', 'resume', 'contact', 'mode', 'clear'];
+  var COMMANDS = ['help', 'neofetch', 'skills', 'projects', 'experience', 'education', 'certs', 'resume', 'contact', 'mode', 'text', 'clear'];
 
   function projRow(p, i) {
     return '<button type="button" class="proj" data-cmd="project ' + (i + 1) + '">' +
@@ -263,7 +275,7 @@ form.prompt:focus-within { box-shadow: 0 1px 0 var(--accent); }
         ['neofetch', 'who I am'], ['projects', 'things I have built'], ['project &lt;n&gt;', 'details for one project'],
         ['skills', 'languages and tools'], ['experience', 'internship'], ['education', 'degree'],
         ['certs', 'certifications'], ['resume', 'open my resume (PDF)'], ['contact', 'where to find me'],
-        ['mode &lt;forest|autumn|moon|neural|off&gt;', 'change colours and animation'], ['clear', 'empty the screen']
+        ['mode &lt;forest|autumn|moon|neural|off&gt;', 'change background and animation'], ['text &lt;match|amber|ice&gt;', 'change text colour'], ['clear', 'empty the screen']
       ];
       return '<div class="rows">' + rows.map(function (r) { return '<span class="k">' + r[0] + '</span><span>' + r[1] + '</span>'; }).join('') +
         '</div><p class="dim">Tab completes a command. Arrow up repeats the last one.</p>';
@@ -325,6 +337,11 @@ form.prompt:focus-within { box-shadow: 0 1px 0 var(--accent); }
       return 'Background set to <span class="ok">' + arg + '</span>.';
     },
     theme: function (a) { return CMD.mode(a); },
+    text: function (arg) {
+      var t = arg === 'match' ? 'auto' : arg;
+      if (['auto', 'amber', 'ice'].indexOf(t) === -1) return 'Usage: <span class="ok">text match</span>, <span class="ok">text amber</span> or <span class="ok">text ice</span>.';
+      setText(t); return 'Text colour set to <span class="ok">' + esc(arg) + '</span>.';
+    },
     exit: function () { return '<span class="dim">This session stays open. Type help to see what is available.</span>'; }
   };
 
@@ -490,15 +507,24 @@ form.prompt:focus-within { box-shadow: 0 1px 0 var(--accent); }
   }
   function start() { if (!raf && !reduce && mode !== 'off') { last = 0; raf = requestAnimationFrame(frame); } }
 
+  function setText(t) {
+    if (t === 'auto') document.documentElement.removeAttribute('data-text'); else document.documentElement.setAttribute('data-text', t);
+    document.querySelectorAll('.modes button[data-text]').forEach(function (b) { b.setAttribute('aria-pressed', String(b.getAttribute('data-text') === t)); });
+    try { localStorage.setItem('portfolio-text', t); } catch (e) {}
+  }
+  document.querySelectorAll('.modes button[data-text]').forEach(function (b) { b.addEventListener('click', function () { setText(b.getAttribute('data-text')); }); });
+  var savedText = null; try { savedText = localStorage.getItem('portfolio-text'); } catch (e) {}
+  if (['auto', 'amber', 'ice'].indexOf(savedText) !== -1) setText(savedText);
+
   function setMode(m) {
     mode = m; document.documentElement.setAttribute('data-mode', m);
-    document.querySelectorAll('.modes button').forEach(function (b) { b.setAttribute('aria-pressed', String(b.getAttribute('data-mode') === m)); });
+    document.querySelectorAll('.modes button[data-mode]').forEach(function (b) { b.setAttribute('aria-pressed', String(b.getAttribute('data-mode') === m)); });
     try { localStorage.setItem('portfolio-mode', m); } catch (e) {}
     if (raf) { cancelAnimationFrame(raf); raf = 0; }
     if (FOREST[m]) { leaves = []; var nl = Math.round(Math.min(46, W / 28)); for (var i = 0; i < nl; i++) leaves.push(newLeaf(true)); }
     frame(0, true); start();
   }
-  document.querySelectorAll('.modes button').forEach(function (b) { b.addEventListener('click', function () { setMode(b.getAttribute('data-mode')); }); });
+  document.querySelectorAll('.modes button[data-mode]').forEach(function (b) { b.addEventListener('click', function () { setMode(b.getAttribute('data-mode')); }); });
   window.addEventListener('mousemove', function (e) { mouse.x = e.clientX; mouse.y = e.clientY; });
   window.addEventListener('resize', resize);
   document.addEventListener('visibilitychange', function () { if (!document.hidden) start(); });
@@ -506,7 +532,7 @@ form.prompt:focus-within { box-shadow: 0 1px 0 var(--accent); }
   var saved = null; try { saved = localStorage.getItem('portfolio-mode'); } catch (e) {}
   if (MODES.indexOf(saved) !== -1) mode = saved;
   document.documentElement.setAttribute('data-mode', mode);
-  document.querySelectorAll('.modes button').forEach(function (b) { b.setAttribute('aria-pressed', String(b.getAttribute('data-mode') === mode)); });
+  document.querySelectorAll('.modes button[data-mode]').forEach(function (b) { b.setAttribute('aria-pressed', String(b.getAttribute('data-mode') === mode)); });
   resize(); start();
 
   /* ---------- boot ---------- */
